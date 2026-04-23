@@ -1,0 +1,70 @@
+#define _USE_MATH_DEFINES
+
+#include <iostream>
+#include <windows.h>
+#include <math.h>
+#include <cmath>
+
+
+using namespace std;
+
+double sides()
+{
+    double side;
+    static char letter = 'a';
+
+    while (true)
+    {
+        cout << "Введіть сторону трикутника "<< letter << ": ";
+        cin >> side;
+
+        if (cin.fail() || side <= 0)
+        {
+            cout<< "Помилка у введеній інформації\n";
+            cin.clear();
+            cin.ignore(10000, '\n');
+        }
+        else
+        {
+            letter++;
+            return side;
+        }
+    }
+}
+
+int main(int argc, char* argv[])
+{
+    system("chcp 65001 > nul");
+    double a, b, c;
+
+    a = sides();
+    b = sides();
+    c = sides();
+
+    if(a + b > c && a + c > b && b + c > a)
+    {
+        double perimetr, halfperim, area;
+        
+        if (a == b && b == c && c == a)
+        {
+            cout<<"Рівносторонній трикутник\n";
+        } else if (a == b || b == c || c == a)
+        {
+            cout<<"Рівнобедрений трикутник\n";
+        } else
+        {
+            cout<<"Різносторонній трикутник\n";
+        }
+
+        perimetr = a + b + c;
+        halfperim = perimetr / 2;
+        area = sqrt(halfperim * (halfperim - a) * (halfperim - b) * (halfperim - c));
+        cout<<"Периметр: "<< perimetr<< "\n"<< "Площа: "<< area;
+        
+    } else
+    {
+        cout << "Трикутник не існує\n";
+    }
+    
+    return 0;
+}
