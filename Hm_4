@@ -1,0 +1,178 @@
+#define _USE_MATH_DEFINES
+
+#include <iostream>
+#include <windows.h>
+#include <string>
+#include <math.h>
+#include <cmath>
+
+using namespace std;
+
+int main(int argc, char* argv[])
+{
+    system("chcp 65001 > nul");
+
+    string names[] = {"Ноутбук", "Мишка", "Клавіатура"};
+    double price[] = {50000, 1000, 5000};
+    int storage[] = {5, 50, 25};
+    int code[] = {1, 2, 3};
+    int cart[] = {0, 0, 0};
+    string address;
+
+
+    string command, start;
+    start = "Введіть команду: ";
+    cout << start;
+
+    while (true)
+    {
+        if (cin >> command)
+        {
+            if (command == "List" || command == "list")
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    cout << names[i] << " " << price[i] << " " << storage[i] <<"шт. " << "Код: " << code[i] << "\n";
+                }
+                cout << start;
+            }
+            else if (command == "Buy" || command == "buy")
+            {
+                cout << "Введіть код товару: ";
+                int userCode;
+                
+                if (cin >> userCode)
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (code[i] == userCode)
+                        {
+                            cout << "Ви обрали: " << names[i] << " " << price[i] << "грн. " << storage[i] <<"шт. " << "\n";
+                            
+                            int quantity;
+                            cout << "Введіть кількість: ";
+                            cin >> quantity;
+
+                            cart[i] += quantity;
+                            cout << "Товар успішно додано. \n";
+    
+                        }
+                    }
+                    cout << start;
+                }
+                else
+                {
+                    cout << "Помилка, спробуйте ще раз: " << start;
+                }
+                
+            }
+            else if (command == "Cart" || command == "cart")
+            {
+                if (cart[0] > 0 || cart[1] > 0 || cart[2] > 0)
+                {
+                    cout << "Ваш кошик: \n";
+                    
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (cart[i] > 0)
+                        {
+                            cout << names[i] << " " << price[i] << "грн. Кількість: " << cart[i] << " шт.\n";
+                        }
+                    }
+                    cout << start;
+                }
+                else
+                {
+                    cout << "Помилка, ваш кошик пустий: ";
+                }
+            }
+            else if (command == "Checkout" || command == "checkout")
+            {
+                if (cart[0] > 0 || cart[1] > 0 || cart[2] > 0)
+                {
+                    double totalP = 0.0;
+                    
+                    for (int i = 0; i < 3; i++)
+                    {
+                        double total = price[i] * cart[i];
+                        totalP += total;
+                    }
+
+                    cout << "Сума замовлення: " << totalP << "грн. \n";
+                    
+                    int cardcode;
+                    cout << "Введіть останні 4 цифри картки лояльності, або введіть 0000 ";
+                    cin >> cardcode;
+                    if (cardcode >= 1000 && cardcode <= 9999)
+                    {
+                        totalP *= 0.95;
+                        cout << "Сума замовлення: " << totalP << "грн. \n";
+                    }
+                    else if (cardcode == 0000)
+                    {
+                        cout << "Сума замовлення: " << totalP << "грн. \n";
+                    }
+                    else
+                    {
+                        cout << "Не вірний формат, знижка не зарахується: \n";
+                    }
+
+                    char delivery;
+                    cout << "Чи потрібна доставка? (y/n): ";
+                    cin >> delivery;
+
+                    if (delivery == 'Y' || delivery == 'y')
+                    {
+                        if (totalP >= 2500)
+                        {
+                            cout << "Вітаю, ваша доставка безкоштовна! \n";
+                        
+                        }
+                        else if (totalP >= 0 && totalP < 2500)
+                        {
+                            cout << "Якщо сума замовлення менша за 2500 грн - доставка 150 грн \n";
+                            totalP += 150;
+                            cout << "Сума замовлення: " << totalP << "грн. \n";
+                        }
+                        else
+                        {
+                            cout << "Помилка, спробуйте ще раз: \n"; 
+                        }
+
+                        cout << "Введіть адресу доставки: ";
+                        cin.ignore();
+                        getline(cin, address);
+                    }
+                    else
+                    {
+                        cout << "Самовивіз з магазину. \n";
+                    }
+                    
+                    cout << "Фінальний чек: \n";
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (cart[i] > 0)
+                        {
+                            cout << names[i] << " " << cart[i] << " шт. (" << price[i] * cart[i] << " грн)\n";
+                        }
+                    }
+                    
+                    cout << "Доставка: " << address << "\n";
+                    cout << "Загальна сума: "<< totalP <<"\n";
+
+                    cart[0] = 0; cart[1] = 0; cart[2] = 0;
+                    
+                }
+                else
+                {
+                    cout << "Помилка, ваш кошик пустий: ";
+                }
+            }
+            else
+            {
+                cout << "Введіть одну з команд: list, buy, cart, checkout \n" << start;
+            }
+        }   
+    }
+}
