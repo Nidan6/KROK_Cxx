@@ -1,0 +1,59 @@
+#include <iostream>
+#include <string>
+#include <windows.h>
+
+using namespace std;
+
+class Student {
+private:
+    //поля класу робимо приватними для безпеки даних
+    string name;
+    int age;
+    float grade;
+
+public:
+    void setData(string studentName, int studentAge, float studentGrade) {
+        name = studentName;
+        
+        if (studentAge >= 15 && studentAge <= 80) {
+            age = studentAge;
+        } else {
+            cout << "[Помилка] Некоректний вік для студента " << name << "! Встановлено базові 18 років." << endl;
+            age = 18;
+        }
+        
+        if (studentGrade >= 0.0 && studentGrade <= 100.0) {
+            grade = studentGrade;
+        } else {
+            cout << "[Помилка] Некоректний середній бал для " << name << "! Встановлено 0." << endl;
+            grade = 0.0;
+        }
+    }
+    
+    void showInfo() {
+        cout << "Ім'я: " << name << " | Вік: " << age << " | Середній бал: " << grade << endl;
+    }
+};
+
+int main() {
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+    
+    Student s1, s2, s3, s4;
+
+    // Задаємо правильні значення
+    s1.setData("Андрій", 19, 85.5);
+    s2.setData("Оксана", 20, 92.0);
+    s3.setData("Марина", 21, 75.3);
+    
+    s4.setData("Іван", 10, 150.0); 
+
+    cout << "\n--- Інформація про студентів ---" << endl;
+    
+    s1.showInfo();
+    s2.showInfo();
+    s3.showInfo();
+    s4.showInfo();
+
+    return 0;
+}
